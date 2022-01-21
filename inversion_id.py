@@ -70,11 +70,11 @@ def inversions (alignment):
     inversion_positions_sequence1 = []
     inversion_positions_sequence2 = []
     for i in inversion_log:
-        place = starting_position_sequence1 + i
-        inversion_positions_sequence1.append(place)
+        place = int(starting_position_sequence1) + i
+        inversion_positions_sequence1.append(str(place))
 
-        place2 = starting_position_sequence2 + i
-        inversion_positions_sequence2.append(place2)
+        place2 = int(starting_position_sequence2) + i
+        inversion_positions_sequence2.append(str(place2))
     done
 
     f. write("kmer starting positions in sequence 1:\t")
