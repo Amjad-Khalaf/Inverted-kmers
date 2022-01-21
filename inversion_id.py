@@ -71,25 +71,26 @@ def inversions (alignment):
     inversion_positions_sequence2 = []
     for i in inversion_log:
         place = int(starting_position_sequence1) + i
-        inversion_positions_sequence1.append(str(place))
+        inversion_positions_sequence1.append(place)
 
         place2 = int(starting_position_sequence2) + i
-        inversion_positions_sequence2.append(str(place2))
+        inversion_positions_sequence2.append(place2)
     done
-
+    
+    f.write("\n")
+    
     f. write("kmer starting positions in sequence 1:\t")
     for i in inversion_positions_sequence1:
-        f.write(i)
+        f.write(str(i))
         f.write("\t")
     done
     f.write("\n")
 
     f. write("kmer starting positions in sequence 2:\t")
     for i in inversion_positions_sequence2:
-        f.write(i)
+        f.write(str(i))
         f.write("\t")
     done
-
     f.write("\n")
 
     f.close
@@ -110,7 +111,7 @@ def inversions (alignment):
     done
 
     #Draw figure (the longitudinal size is helpful - maybe modify it based on how output turns out)
-    fig = plt.figure(figsize=(60,3))
+    fig = plt.figure(figsize=(60,5))
     ax = fig.add_subplot()
 
     #I'm drawing a bar graph, but I want all the bars to have the same height.
@@ -131,10 +132,22 @@ def inversions (alignment):
 
     #Disable y axes
     ax.get_yaxis().set_visible(False)
-
+    
     #Create second x axis (for sequence 2)
     ax2 = ax.twiny()
     
+
+    #fix sync issue between two x axes
+    end_position_xaxis_sequence1 = xaxis_sequence1[(len(xaxis_sequence1)-1)]
+    end_position_xaxis_sequence2 = xaxis_sequence2[(len(xaxis_sequence2)-1)]
+    
+    start_position_xaxis_sequence1 = xaxis_sequence1[0]
+    start_position_xaxis_sequence2 = xaxis_sequence2[0]
+
+    ax.set_xlim([start_position_xaxis_sequence1, end_position_xaxis_sequence1])
+    ax2.set_xlim([start_position_xaxis_sequence2, end_position_xaxis_sequence2])
+
+
 
     #plot bar graph
     ax.bar(xaxis_sequence1, width = 1, height = height,  color= colors)
@@ -147,4 +160,6 @@ def inversions (alignment):
     
     plt.savefig(str(alignment) + 'plot.png')
 
+
 inversions(firstarg)
+
