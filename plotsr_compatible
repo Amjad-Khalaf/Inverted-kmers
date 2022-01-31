@@ -80,14 +80,24 @@ shared_unique_kmers = unique_kmers_sequence1.intersection(unique_kmers_sequence2
 f = open('AcolMOP1-AcolN2_structural_variation.out', 'a')
 
 for i in intersection_inverse_kmers:
-    index_seq1 = kmer_list_sequence1.index(i)
+    original_kmer = str(i)
+    original_kmer = original_kmer[::-1]
+    index_seq1 = kmer_list_sequence1.index(original_kmer)
     index_seq2 = kmer_list_sequence2.index(i)
     f.write("3RL\t" + str(index_seq1) + "\t" + str(index_seq1 + 30) + "\t3RL\t" + str(index_seq2) + "\t" + str(index_seq2 + 30) + "\t" + "INV")
     f.write("\n")
 done
 
 for i in intersection_reverse_complement_kmers:
-    index_seq1 = kmer_list_sequence1.index(i)
+    original_kmer = str(i)
+    original_kmer = original_kmer[::-1]
+    original_kmer = original_kmer.replace("A", "t")
+    original_kmer = original_kmer.replace("T", "a")
+    original_kmer = original_kmer.replace("C", "g")
+    original_kmer = original_kmer.replace("G", "c")
+    original_kmer = original_kmer.upper()
+
+    index_seq1 = kmer_list_sequence1.index(original_kmer)
     index_seq2 = kmer_list_sequence2.index(i)
     f.write("3RL\t" + str(index_seq1) + "\t" + str(index_seq1 + 30) + "\t3RL\t" + str(index_seq2) + "\t" + str(index_seq2 + 30) + "\t" + "INV")
     f.write("\n")
