@@ -10,7 +10,7 @@ from Bio import SeqIO
 
 #import sequence 1
 sequence1 = []
-with open('/lustre/scratch123/tol/projects/badass/users/ak37/pangenome/coluzzii/3RL/AcolMOP1.fa', 'r') as file:
+with open('sequence1', 'r') as file:
     for line in file:
         line = line.rstrip()
         sequence1.append(line)
@@ -22,7 +22,7 @@ sequence1 = sequence1.upper()
 
 #import sequence 2
 sequence2 = []
-with open('/lustre/scratch123/tol/projects/badass/users/ak37/pangenome/coluzzii/3RL/AcolN2.fa', 'r') as file:
+with open('sequence2', 'r') as file:
     for line in file:
         line = line.rstrip()
         sequence2.append(line)
@@ -77,7 +77,7 @@ intersection_reverse_complement_kmers = reverse_complement_kmers_sequence1.inter
 shared_unique_kmers = unique_kmers_sequence1.intersection(unique_kmers_sequence2)
 
 
-f = open('AcolMOP1-AcolN2_structural_variation.out', 'a')
+f = open('structural_variation.out', 'a')
 
 for i in intersection_inverse_kmers:
     original_kmer = str(i)
