@@ -43,6 +43,18 @@ Ultimately, instead of running these steps separately, running the shell script 
 
 ```
 ./kmer_count.sh reference.fasta 
-./inversion-id.py sampled_sequence1_unique_kmer query_chromosome.fasta
+./inversion-id.py sampled_sequence1_unique_kmer query_chromosome.fasta structural_variation.out chromosome_name
 ```
 
+<br />
+I generated a script to speed up the process temporarily, as I work on on optimising the python approach itself. The `speedrun.sh` will split the 100k kmers into chunks of 5kmers, and run `inversion-id.py` on each of them in parallel. This is slightly messy, and will require a cleanup script to be run afterwards.
+
+<br />
+
+
+
+```
+./kmer_count.sh reference.fasta
+./speedrun.sh query_chromosome.fasta chromosome_name
+./cleanup.sh
+```
