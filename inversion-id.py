@@ -40,7 +40,7 @@ file.close()
 for i in unique_kmer_list_sequence1:
 
     if i in sequence2:
-        f = open('structural_variation.out', 'a')
+        f = open(output_file, 'a')
         f.write(str(chromosome) + "\t" + str(sequence2.index(i) + 1) + "\t" + str(sequence2.index(i) + 32) + "\t" + "SYN" + str(unique_kmer_list_sequence1.index(i)) + "\n")
         f.close()
     done
