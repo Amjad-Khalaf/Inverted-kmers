@@ -20,6 +20,3 @@ touch structural_variation.out
 
 #sample 100k 31-mers from sequence 1
 shuf -n 100000 sequence1_unique_kmer > sampled_sequence1_unique_kmer
-
-#return to base environment
-conda deactivate
