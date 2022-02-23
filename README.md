@@ -34,12 +34,12 @@ shuf -n 100000 sequence1_unique_kmer > sampled_sequence1_unique_kmer
 Then, generate the output file `touch structural_variation.out` and run the python script to identify inversions as follows:
 
 ```
-./inversion-id.py sampled_sequence1_unique_kmer query_chromosome.fasta
+./inversion-id.py sampled_sequence1_unique_kmer query_chromosome.fasta outputfile.bed chromosome_name
 ```
 
 <br />
 
-Ultimately, instead of running these steps separately, running the shell script `kmer_count.sh` will do all of this for you.
+Ultimately, instead of running these steps separately, running the shell script `kmer_count.sh` will do all of this for you. By this script, the output bed file is called `structural_variation.out`
 
 ```
 ./kmer_count.sh reference.fasta 
