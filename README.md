@@ -1,8 +1,11 @@
 # Identifying large inversions between two sequences (INV-ID)
 <br />
-This code receives a reference chromosome, and uses Jellyfish2 to extract all unique kmers from it. Then, it checks for the presence of these unique kmers in a submitted query chromosome as matches or as inverted kmers. It records all of the results in a bed file which can be viewed using IGV.
+This code receives a reference chromosome, and uses Jellyfish2 to extract all unique 31-mers from it. Then, it checks for the presence of these unique 31-mers in a submitted query chromosome as matches or as inverted 31-mers. It records all of the results in a bed file which can be viewed using IGV.
 <br />
 <br />
+
+### Identify inverted 31-mers between two genomic assemblies
+
 Run Jellyfish on reference chromosome to identify unique kmers:
 <br />
 <br />
@@ -58,3 +61,26 @@ I generated a script to speed up the process temporarily, as I work on on optimi
 ./speedrun.sh query_chromosome.fasta chromosome_name
 ./cleanup.sh
 ```
+
+<br />
+
+### View inversion positions in IGV
+
+If you ran `./speedrun.sh` followed by `./cleanup.sh` , you could access `inversion_list.bed` and `syn_list.bed` in in IGV to view the positions of inverted 31-mers. A large inversion will appear as a long stretch of inverted 31-mers, with a gap in the track from `syn_list.bed` which symbolise the matching 31-mers.
+
+<br />
+
+If you did not run `./speedrun.sh` , and just ran `./inversion-id.py sampled_sequence1_unique_kmer query_chromosome.fasta outputfile.bed chromosome_name` , the output file will have been `structural_variation.out` . From this, you need to separate inversions and matching 31 mers, sort each of these files respectively, and then you can view them as tracks in IGV. This can be done as follows: 
+
+```
+grep "INV" structural_variation.out | sort -k 2n > inversion_list.bed
+grep "SYN" structural_variation.out | sort -k 2n > syn_list.bed
+```
+
+
+<br />
+
+This is a sample image from IGV for what an inversion would look like. Please note, you might have to zoom in a bit for gaps in the syn track to appear. The inv track is displayed in blue, whilst the syn in red.
+
+<img width="1165" alt="Screenshot 2022-03-01 at 09 54 19" src="https://user-images.githubusercontent.com/92156267/156146772-f78902e7-b12d-4a30-ab6d-9daf512be4d7.png">
+
