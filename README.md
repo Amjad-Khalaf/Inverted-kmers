@@ -47,9 +47,9 @@ Ultimately, instead of running these steps separately, running the shell script 
 ```
 
 <br />
-I generated a script to speed up the process temporarily, as I work on on optimising the python approach itself. The `speedrun.sh` will split the 100k kmers into chunks of 5kmers, and run `inversion-id.py` on each of them in parallel. This is slightly messy, and will require a cleanup script to be run afterwards.
 
-<br />
+I generated a script to speed up the process temporarily, as I work on on optimising the python approach itself. The `speedrun.sh` will split the 100k kmers into chunks of 5kmers, and run `inversion-id.py` on each of them in parallel. This is slightly messy, and will require a cleanup script to be run afterwards. In order to run the `speedrun.sh` script, you need to write your cluster job submission command inside it.
+
 
 
 
