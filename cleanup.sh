@@ -32,6 +32,10 @@ rm sampled_sequence1_unique_kmer_segment*
 rm error*
 rm output*
 
+#sort total_structural_variation.out
+sort -k 2n total_structural_variation.out > sorted_total_structural_variation.out
+rm total_structural_variation.out
+
 #extract inversions and matching kmers in separate files
 grep "INV" total_structural_variation.out | sort -k 2n > inversion_list.bed
 grep "SYN" total_structural_variation.out | sort -k 2n > syn_list.bed
