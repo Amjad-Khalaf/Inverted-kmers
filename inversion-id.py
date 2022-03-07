@@ -7,12 +7,13 @@ from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 import sys
 from Bio import SeqIO
+import random
+
 
 unique_kmers_sequence_1 = sys.argv[1]
 sequence2_inputfile = sys.argv[2]
-output_file = sys.argv[3]
-chromosome = sys.argv[4]
-
+chromosome = sys.argv[3]
+output_file = str(chromosome) + "_" + str(random.randint(0,10000)) + "_structural_variation.out"
 
 #import sequence 2
 sequence2 = []
@@ -36,7 +37,7 @@ file.close()
 
 #find inverted kmers in sequence 2
 
-f = open(output_file, 'a')
+f = open(output_file, 'a+')
 for i in unique_kmer_list_sequence1:
 
     if i in sequence2:
