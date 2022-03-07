@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-#This script extracts unique kmers from a reference chromosome submitted using Jellyfish2
-
-eval "$(conda shell.bash hook)" #this is to prevent the conda init error
-conda activate /software/team222/ak37/miniconda3/envs/jellyfish
+#This script extracts unique kmers from a chromosome submitted using Jellyfish2
 
 jellyfish count -m 31 -s 100M -t 10 -o sequence1.kmer.count $1 #31mer count for sequence 1
 
