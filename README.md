@@ -2,7 +2,7 @@
 <br />
 This code is written to identify inversions between two submitted chromosomes. It receives chromosome 1 and uses Jellyfish2 to extract all unique 31-mers from it. Then, it checks for the presence of these unique 31-mers in the submitted chromosome 2 as matches or as inverted 31-mers. It records all of the results in a bed file which can be viewed using IGV. It also provides the option of investigating the detailed structure of any identified inversion. 
 <br />
-This method has the potential to outcompete alignment-based methods and other inversion-id methods available, which generally do not provide additional insight into the structure of the inversion (see last section in README.md document), but take around the same time to run.
+This method has the potential to outcompete alignment-based methods and other inversion-id methods available, which are less efficient, error-prone, and generally do not provide additional insight into the structure of the inversion (see last section in README.md document), but take around the same time to run.
 
 
 <br />
@@ -50,19 +50,19 @@ Ultimately, instead of running these steps separately, running the shell script 
 
 ```
 ./kmer_count.sh chromosome1.fasta 
-./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta structural_variation.out chromosome_name
+./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta chromosome_name
 ```
 
 <br />
 
-In order to speed up the running process, running `./speedrun.sh` is advised. The `speedrun.sh` will split the 100k kmers into chunks of 5kmers, and run `inversion-id.py` on each of them in parallel. This is slightly messy, and will require a cleanup script to be run afterwards. In order to run the `speedrun.sh` script, you need to write your cluster job submission command inside it.
+In order to speed up the running process, running `./speedrun.sh` was impelemented with the option of multi-threading. The `speedrun.sh` will split the 100k kmers into smaller chunks (based on how many threads are chosen), and run `inversion-id.py` on each of them in parallel. This is slightly messy, and will require a cleanup script to be run afterwards. You may modify memory allocation or add a cluster job submission command inside `./speedrun.sh`.
 
 
 
 
 ```
 ./kmer_count.sh chromosome1.fasta
-./speedrun.sh chromosome2.fasta chromosome_name
+./speedrun.sh chromosome2.fasta chromosome_name thread_number
 ./cleanup.sh
 ```
 
@@ -94,11 +94,11 @@ This is a sample image from IGV for what an inversion would look like. Please no
 ### Observe more detailed structure of inversions identified
 <br />
 
-Unlike other methods, this method provides additional insight into the structure of the variation, which is missed by whole-genome alignment approaches. To do this, the `kmer_status_plot.py` will receive the output file from `inversion-id.py` and go through the 31-mers from the beginning of the chromosome to its end. For each 100 31-mers, it will calculate the proportion of inverted 31-mers, and will plot this as a line graph. This approach clearly shows a large inversion if present, but it also identifies if the inversion has some non-inverted sequences like repeats (or otherwise) that are usually missed out by whole-genome alignment approaches.
+This method also provides additional insight into the structure of the variation, which is missed by whole-genome alignment approaches. To do this, the `kmer_status_plot.py` will receive the output file from `inversion-id.py` and go through the 31-mers from the beginning of the chromosome to its end. For each 100 31-mers, it will calculate the proportion of inverted 31-mers, and will plot this as a line graph. This approach clearly shows a large inversion if present, but it also identifies if the inversion has some non-inverted sequences like repeats (or otherwise) that are usually missed out by genome alignment approaches.
 
 <br />
 
-Here is an example of an inversion displayed by this plot. Smaller inversions not usually picked up by whole-genome alignment methods are also identified.
+Here is an example of an inversion displayed by this plot. Smaller inversions not usually picked up by genome alignment methods are also identified.
 
 ![output](https://user-images.githubusercontent.com/92156267/156162889-7cbad62d-027c-4b05-9035-ea29c4bbf5fb.png)
  
