@@ -41,7 +41,7 @@ f = open(output_file, 'a+')
 for i in unique_kmer_list_sequence1:
 
     if i in sequence2:
-        f.write(str(chromosome) + "\t" + str(sequence2.index(i) + 1) + "\t" + str(sequence2.index(i) + 32) + "\t" + "SYN" + str(unique_kmer_list_sequence1.index(i)) + "\n")
+        f.write(str(chromosome) + "\t" + str(sequence2.index(i) + 1) + "\t" + str(sequence2.index(i) + 32) + "\t" + "SYN" + str(random.randint(0,500000)) + "\n")
        
     done
 
@@ -54,7 +54,7 @@ for i in unique_kmer_list_sequence1:
     reverse_complement_kmer = reverse_complement_kmer.upper()
 
     if reverse_complement_kmer in sequence2:
-        f.write(str(chromosome) + "\t" + str(sequence2.index(reverse_complement_kmer) + 1) + "\t" + str(sequence2.index(reverse_complement_kmer) + 32) + "\t" + "INV" + str(unique_kmer_list_sequence1.index(i)) + "\n")
+        f.write(str(chromosome) + "\t" + str(sequence2.index(reverse_complement_kmer) + 1) + "\t" + str(sequence2.index(reverse_complement_kmer) + 32) + "\t" + "INV" + str(random.randint(0,500000)) + "\n")
       
     done
 done
