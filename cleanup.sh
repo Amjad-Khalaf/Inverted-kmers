@@ -7,7 +7,7 @@ touch total_list.out
 
 #for loop
 
-for file in _structural_variation.out; do $file >> total_list.out
+for file in *_structural_variation.out; do $file >> total_list.out
 done
 
 
