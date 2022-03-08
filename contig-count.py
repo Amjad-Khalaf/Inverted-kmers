@@ -10,8 +10,8 @@ from Bio import SeqIO
 import random
 import re
 
-sequence2_inputfile = sys.arg[1]
-chromosome_name = sys.arg[2]
+sequence2_inputfile = sys.argv[1]
+chromosome_name = sys.argv[2]
 
 #import sequence 2
 sequence2 = []
