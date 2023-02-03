@@ -1,9 +1,6 @@
-# Identifying large inversions between two sequences (INV-ID)
+# Identifying large inversions between two sequences
 <br />
 This code is written to identify inversions between two submitted chromosomes. It receives chromosome 1 and uses Jellyfish2 to extract all unique 31-mers from it. Then, it checks for the presence of these unique 31-mers in the submitted chromosome 2 as matches or as inverted 31-mers. It records all of the results in a bed file which can be viewed using IGV. It also provides the option of investigating the detailed structure of any identified inversion. 
-<br />
-This method has the potential to outcompete alignment-based methods and other inversion-id methods available, which are less efficient, error-prone, and generally do not provide additional insight into the structure of the inversion (see last section in README.md document), but take around the same time to run.
-
 
 <br />
 <br />
