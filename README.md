@@ -78,6 +78,8 @@ This is a sample image from IGV for what an inversion would look like. Please no
 
 This method also provides additional insight into the structure of the variation, which is missed by whole-genome alignment approaches. To do this, the `kmer_status_plot.py` will receive the output file from `inversion-id.py` and go through the 31-mers from the beginning of the chromosome to its end. For each 100 31-mers, it will calculate the proportion of inverted 31-mers, and will plot this as a line graph. This approach clearly shows a large inversion if present, but it also identifies if the inversion has some non-inverted sequences like repeats (or otherwise) that are usually missed out by genome alignment approaches.
 
+I've now added a script to count contigs, and this will allow contig breaks to be displayed on top of the line graph. For this to run properly, you first need to run `contig_count.py chromosome2.fasta chromosome_name`. Then, you can run `kmer_status_plot.py`.
+
 <br />
 
 Here is an example of an inversion displayed by this plot. Smaller inversions not usually picked up by genome alignment methods are also identified.
