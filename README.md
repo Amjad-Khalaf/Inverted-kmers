@@ -52,19 +52,6 @@ Ultimately, instead of running these steps separately, running the shell script 
 
 <br />
 
-In order to speed up the running process, running `./speedrun.sh` was impelemented with the option of multi-threading. The `speedrun.sh` will split the 100k kmers into smaller chunks (based on how many threads are chosen), and run `inversion-id.py` on each of them in parallel. This is slightly messy, and will require a cleanup script to be run afterwards. You may modify memory allocation or add a cluster job submission command inside `./speedrun.sh`.
-
-
-
-
-```
-./kmer_count.sh chromosome1.fasta
-./speedrun.sh chromosome2.fasta chromosome_name thread_number
-./cleanup.sh
-```
-
-<br />
-
 ### View inversion positions in IGV
 
 If you ran `./speedrun.sh` followed by `./cleanup.sh` , you could access `inversion_list.bed` and `syn_list.bed` with the `chromosome2.fasta` file in IGV to view the positions of inverted 31-mers. A large inversion will appear as a long stretch of inverted 31-mers, with a gap in the track from `syn_list.bed` which symbolise the matching 31-mers.
