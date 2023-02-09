@@ -54,11 +54,9 @@ Ultimately, instead of running these steps separately, running the shell script 
 
 ### View inversion positions in IGV
 
-If you ran `./speedrun.sh` followed by `./cleanup.sh` , you could access `inversion_list.bed` and `syn_list.bed` with the `chromosome2.fasta` file in IGV to view the positions of inverted 31-mers. A large inversion will appear as a long stretch of inverted 31-mers, with a gap in the track from `syn_list.bed` which symbolise the matching 31-mers.
-
 <br />
 
-If you did not run `./speedrun.sh` , and just ran `./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta outputfile.bed chromosome_name` . From the output file, you need to separate inversions and matching 31 mers, sort each of these files respectively, and then you can view them as tracks in IGV. This can be done as follows: 
+If you ran `./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta outputfile.bed chromosome_name` . From the output file, you need to separate inversions and matching 31 mers, sort each of these files respectively, and then you can view them as tracks in IGV. This can be done as follows: 
 
 ```
 grep "INV" outputfile.bed  | sort -k 2n > inversion_list.bed
