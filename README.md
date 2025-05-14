@@ -1,91 +1,62 @@
 # Identifying large inversions between two sequences
-<br />
-This code is written to identify inversions between two submitted chromosomes. It receives chromosome 1 and uses Jellyfish2 to extract all unique 31-mers from it. Then, it checks for the presence of these unique 31-mers in the submitted chromosome 2 as matches or as inverted 31-mers. It records all of the results in a bed file which can be viewed using IGV. It also provides the option of investigating the detailed structure of any identified inversion. 
 
-<br />
-<br />
+<div align="justify">
+ 
+I've rewritten this tool in `Go` to identify inversions between two fasta files. It receives two genomes, kmerises them non-canonically, identifies the unique kmers in genome 1, and generates a bed file with the location of those kmers and whether they're syntenic or inverted in genome 2. The premise is identical to v1.0, but now doesn't rely on Jellyfish, and the process is more streamlined with fewer steps. A `python` script is also supplied, which visualises inverted kmer density in each sequence/contig/chromosome in genome 2.
 
-### Identify inverted 31-mers between two genomic assemblies
+## Installation
 
-Run Jellyfish on chromosome 1 to identify unique kmers:
-<br />
-<br />
+<div align="justify">
+  
+Installation is simple. Clone this repository, `cd` into it, and run `go build`. You need Go installed to do this -- see https://go.dev/doc/install.
+
+For running the `Python` script, you need a virtual environment with `Python3` and the following installed.
+
 
 ```
-jellyfish count -m 31 -s 100M -t 10 -o chromosome1.kmer.count chromosome1.fa ##-m determines kmer size, and -o determines name of output file
-jellyfish dump sequence1.kmer.count > sequence1_kmer_list ##this command makes the output file human-readable
-```
-<br />
-<br />
-
-From the kmer list, to extract unique kmers `vi` a text file called ` id.txt ` with `1` as its only content. Then carry out the following commands:
-
-```
-awk -F'>' 'NR==FNR{ids[$0]; next} NF>1{f=($2 in ids)} f' id.txt sequence1_kmer_list > sequence1_unique_kmer
-sed -i.bak '/^>/d' sequence1_unique_kmer #remove fasta labels from kmer list
+sys
+numpy
+matplotlib
 ```
 
-<br />
+## Quick! How do I use it?!
 
-Although in theory, the script could take all the unique kmers from the chromosome 1 and test them, taking only 100k appears to be sufficient to identify large inversions.
-
-```
-shuf -n 100000 sequence1_unique_kmer > sampled_sequence1_unique_kmer
-```
-
-<br />
-
-Then, generate the output file `touch structural_variation.out` and run the python script to identify inversions as follows:
+<div align="justify">
 
 ```
-./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta chromosome_name
+Usage: Inverted_Kmers Fasta1 Fasta2 k > OutputBedFile
+       Arguments:
+      	<Fasta1>   Path to the first FASTA file.
+      	<Fasta2>   Path to the second FASTA file.
+      	<k>        Length of k-mers.
+
+	Example:
+	Inverted_Kmers genome1.fasta genome2.fasta 21
 ```
 
-<br />
-
-Ultimately, instead of running these steps separately, running the shell script `kmer_count.sh` will do all of this for you. By this script, the output bed file is called `structural_variation.out`
+Here's a snippet of an output bed file:
 
 ```
-./kmer_count.sh chromosome1.fasta 
-./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta chromosome_name
+X       25546615   25546646   INVERTED   GTCTACTAGCACTCTGGAAGTTTGTACCATT
+X       7473502    7473533    SYNTENIC   AAGAGCTCAATTCAAGCACTGATTACGATGC
+X       4559038    4559069    SYNTENIC   GTTAAAGTCAGTGAAGAATAAAAAAAGAACA
 ```
 
-<br />
-
-### View inversion positions in IGV
-
-<br />
-
-If you ran `./inversion-id.py sampled_sequence1_unique_kmer chromosome2.fasta outputfile.bed chromosome_name` . From the output file, you need to separate inversions and matching 31 mers, sort each of these files respectively, and then you can view them as tracks in IGV. This can be done as follows: 
+Once you have an `OutputBedFile`, you can run the plotting script as follows. As in the previous version, it sorts kmers identified by their position along each sequence/contig/chromosome, generates bins of 100 kmers, and plots inverted kmer density. A plot will be generated for each sequence/contig/chromosome, with the name `{sequence}.png`.
 
 ```
-grep "INV" outputfile.bed  | sort -k 2n > inversion_list.bed
-grep "SYN" outputfile.bed  | sort -k 2n > syn_list.bed
+Usage: python PlotKmerDensity.py OutputBedFile [chunk_size] [window_size]
+       Arguments:
+       <bed_file>: Path to BED file containing kmer match status
+       [chunk_size]: (Optional) Number of kmers per bin (default: 100)
+       [window_size]: (Optional) Smoothing window size (default: 70)
 ```
 
+![X](https://github.com/user-attachments/assets/ae3b0fc4-cd67-4b86-a9ad-58d2fe423b36)
 
-<br />
 
-This is a sample image from IGV for what an inversion would look like. Please note, you might have to zoom in a bit for gaps in the syn track to appear. The inv track is displayed in blue, whilst the syn in red.
+You may be able to still use the bed file to have a look with IGV (although you may need to tweak this a bit -- I haven't tested the latest version). This is a sample image from IGV for what an inversion would look like. Please note, you might have to zoom in a bit for gaps in the syntenic kmer track to appear. The inverted kmer track is displayed in blue, whilst the syntenic kmer in red.
 
 <img width="1165" alt="Screenshot 2022-03-01 at 09 54 19" src="https://user-images.githubusercontent.com/92156267/156146772-f78902e7-b12d-4a30-ab6d-9daf512be4d7.png">
 
-<br />
-<br />
-
-### Observe more detailed structure of inversions identified
-<br />
-
-This method also provides additional insight into the structure of the variation, which is missed by whole-genome alignment approaches. To do this, the `kmer_status_plot.py` will receive the output file from `inversion-id.py` and go through the 31-mers from the beginning of the chromosome to its end. For each 100 31-mers, it will calculate the proportion of inverted 31-mers, and will plot this as a line graph. This approach clearly shows a large inversion if present, but it also identifies if the inversion has some non-inverted sequences like repeats (or otherwise) that are usually missed out by genome alignment approaches.
-
-I've now added a script to count contigs, and this will allow contig breaks to be displayed on top of the line graph. For this to run properly, you first need to run `contig_count.py chromosome2.fasta chromosome_name`. Then, you can run `kmer_status_plot.py`.
-
-<br />
-
-Here is an example of an inversion displayed by this plot. Smaller inversions not usually picked up by genome alignment methods are also identified.
-
-![output](https://user-images.githubusercontent.com/92156267/156162889-7cbad62d-027c-4b05-9035-ea29c4bbf5fb.png)
- 
-
-
-
+</div>
